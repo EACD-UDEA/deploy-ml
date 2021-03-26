@@ -16,12 +16,22 @@ SplitName = te.Literal["train", "test"]
 
 def get_dataset(reader: DatasetReader, splits: t.Iterable[SplitName]):
     df = reader()
-    df = clean_dataset(df)
-    y = df["SalePrice"]
-    X = df.drop(columns=["SalePrice", "Id"])
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.3, random_state=1
-    )
+    print(df.head())
+    #df = clean_dataset(df)
+    feature_columns = ["yr", "mnth", "hr", "season", "holiday", "weekday", "workingday", "weathersit", "temp", "hum",
+                       "windspeed"]
+    target_column = "cnt"
+    y = df[target_column]
+    X = df[feature_columns]
+    #X_train, X_test, y_train, y_test = train_test_split(
+    #    X, y, test_size=0.3, random_state=1
+    #)
+    print(y)
+    print(X)
+    train_indices = X["yr"] == 0
+    X_train, y_train = X[train_indices], y[train_indices]
+    X_test, y_test = X[~train_indices], y[~train_indices]
+
     split_mapping = {"train": (X_train, y_train), "test": (X_test, y_test)}
     return {k: split_mapping[k] for k in splits}
 

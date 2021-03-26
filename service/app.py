@@ -8,7 +8,7 @@ import pandas as pd
 from fastapi import FastAPI, Depends, Body  # type: ignore # noqa: E402
 from pydantic import BaseSettings, PositiveFloat
 
-from entities import ModelInput
+from service.entities import ModelInput
 
 app = FastAPI(title="API to make inference with my great model", version="0.0.1")
 
@@ -26,27 +26,29 @@ def get_settings():
 @lru_cache(None)
 def load_estimator():
     sys.path.append(get_settings().model_lib_dir)
-    estimator = joblib.load(get_settings().serialized_model_path)
+    path_serialized_model_path = get_settings().serialized_model_path
+    estimator = joblib.load(path_serialized_model_path)
     return estimator
 
 
-# @app.post("/")
-# async def make_prediction(input_: str = Body(...), estimator=Depends(load_estimator)):
-#     """
-#     Call this using something like
+@app.post("/")
+async def make_prediction(input_: str = Body(...), estimator=Depends(load_estimator)):
+    """
+    Call this using something like
 
-#     YrSold=2010,YearBuilt=1970,YearRemodAdd=1999,GarageYrBlt=1980,LotArea=24,Neighborhood=Blmngtn,HouseStyle=SFoyer
-#     """
-#     input_dict = {}
-#     for var in input_.split(","):
-#         name, value = var.split("=")
-#         if value.isnumeric():
+    YrSold=2010,YearBuilt=1970,YearRemodAdd=1999,GarageYrBlt=1980,LotArea=24,Neighborhood=Blmngtn,HouseStyle=SFoyer
 
-#             value = int(value)
-#         input_dict[name] = [value]
-#     X = pd.DataFrame(input_dict)
-#     prediction = estimator.predict(X).tolist()
-#     return prediction
+    yr=0,mnth=1,hr=0,season=1,holiday=0,weekday=6,workingday=0,weathersit=1,temp=0.24,hum=0.81,windspeed=0.0000
+    """
+    input_dict = {}
+    for var in input_.split(","):
+        name, value = var.split("=")
+        if value.isnumeric():
+            value = int(value)
+        input_dict[name] = [value]
+    X = pd.DataFrame(input_dict)
+    prediction = estimator.predict(X).tolist()
+    return prediction
 
 
 # @app.post("/")
@@ -83,16 +85,16 @@ def get_logger():
     return Logger()
 
 
-@app.post("/", response_model=t.List[float])
-async def make_prediction(
-    inputs: t.List[ModelInput] = Body(...),
-    estimator=Depends(load_estimator),
-    logger=Depends(get_logger),
-):
-    logger.log(inputs)
-    X = pd.DataFrame([row.dict() for row in inputs])
-    prediction = estimator.predict(X).tolist()
-    return prediction
+# @app.post("/", response_model=t.List[float])
+# async def make_prediction(
+#     inputs: t.List[ModelInput] = Body(...),
+#     estimator=Depends(load_estimator),
+#     logger=Depends(get_logger),
+# ):
+#     logger.log(inputs)
+#     X = pd.DataFrame([row.dict() for row in inputs])
+#     prediction = estimator.predict(X).tolist()
+#     return prediction
 
 
 @app.get("/")

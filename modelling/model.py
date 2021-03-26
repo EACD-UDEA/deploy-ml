@@ -14,15 +14,17 @@ def build_estimator(hyperparams: t.Dict[str, t.Any]):
         estimator = estimator_mapping[name](**params)
         steps.append((name, estimator))
     model = Pipeline(steps)
+    print(steps)
+    print(model)
     return model
 
 
 def get_estimator_mapping():
     return {
-        "regressor": RandomForestRegressor,
-        "age-extractor": AgeExtractor,
-        "column-transformer": CustomColumnTransformer,
-        "simplified-transformer": SimplifiedTransformer,
+        "regressor": RandomForestRegressor
+        #"age-extractor": AgeExtractor,
+        #"column-transformer": CustomColumnTransformer,
+        #"simplified-transformer": SimplifiedTransformer,
     }
 
 

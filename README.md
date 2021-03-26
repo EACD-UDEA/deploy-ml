@@ -46,3 +46,23 @@ Project Organization
 --------
 
 <p><small>Project based on the <a target="_blank" href="https://drivendata.github.io/cookiecutter-data-science/">cookiecutter data science project template</a>. #cookiecutterdatascience</small></p>
+
+
+## RUN APP ON WINDOWS
+''''
+#Instalar dependencias
+pip install -r ./service/requirements.txt
+
+#Entrenar el modelo
+python .\modelling\app.py train .\config.yml
+
+#Evaluar el modelo
+python .\modelling\app.py eval .\config.yml "2021-03-24 12_58_00+00_00"
+
+#Registrar variables (Editor de registro)
+SERIALIZED_MODEL_PATH=C:\Users\Asus\Documents\Development\WorkSpaces\ecad\machine-learning-ii\demo\models\2021-03-22 02_26_00+00_00\model.joblib
+MODEL_LIB_DIR=C:\Users\Asus\Documents\Development\WorkSpaces\ecad\machine-learning-ii\demo\modellling
+
+#Run server
+uvicorn service.app:app
+''''
