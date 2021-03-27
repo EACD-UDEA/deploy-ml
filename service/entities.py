@@ -3,7 +3,6 @@ import typing_extensions as te
 
 from pydantic import BaseModel, Field, ConstrainedInt, PositiveInt, PositiveFloat
 
-
 # class ModelInput(BaseModel):
 #     YrSold: int
 #     YearBuilt: int
@@ -55,17 +54,39 @@ HouseStyleLiteral = te.Literal[
 #     Neighborhood: NeighborhoodLiteral
 #     HouseStyle: HouseStyleLiteral
 
+class HrInt(ConstrainedInt):
+    ge = 0
+    le = 23
+
+
+class MnthInt(ConstrainedInt):
+    ge = 1
+    le = 12
+
+
+class ModelInput(BaseModel):
+    yr: int
+    mnth: MnthInt
+    hr: HrInt
+    season: int
+    holiday: int
+    weekday: int
+    workingday: int
+    weathersit: int
+    temp: float
+    hum: float
+    windspeed: float
+
 
 class YearInteger(ConstrainedInt):
     ge = 1800
     le = 2020
 
-
-class ModelInput(BaseModel):
-    YrSold: YearInteger
-    YearBuilt: YearInteger
-    YearRemodAdd: YearInteger
-    GarageYrBlt: YearInteger
-    LotArea: PositiveFloat
-    Neighborhood: NeighborhoodLiteral
-    HouseStyle: HouseStyleLiteral
+# class ModelInput(BaseModel):
+#     YrSold: YearInteger
+#     YearBuilt: YearInteger
+#     YearRemodAdd: YearInteger
+#     GarageYrBlt: YearInteger
+#     LotArea: PositiveFloat
+#     Neighborhood: NeighborhoodLiteral
+#     HouseStyle: HouseStyleLiteral
