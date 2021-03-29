@@ -36,8 +36,6 @@ def load_estimator():
 #     """
 #     Call this using something like
 #
-#     YrSold=2010,YearBuilt=1970,YearRemodAdd=1999,GarageYrBlt=1980,LotArea=24,Neighborhood=Blmngtn,HouseStyle=SFoyer
-#
 #     yr=0,mnth=1,hr=0,season=1,holiday=0,weekday=6,workingday=0,weathersit=1,temp=0.24,hum=0.81,windspeed=0.0000
 #     """
 #     input_dict = {}

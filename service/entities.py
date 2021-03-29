@@ -64,23 +64,38 @@ class MnthInt(ConstrainedInt):
     le = 12
 
 
+class WorkDayInt(ConstrainedInt):
+    ge = 1
+    le = 7
+
+
+class WorkingDaytInt(ConstrainedInt):
+    ge = 0
+    le = 1
+
+
+class WeatherSitInt(ConstrainedInt):
+    ge = 1
+    le = 4
+
+
 class ModelInput(BaseModel):
     yr: int
     mnth: MnthInt
     hr: HrInt
     season: int
     holiday: int
-    weekday: int
-    workingday: int
-    weathersit: int
+    weekday: WorkDayInt
+    workingday: WorkingDaytInt
+    weathersit: WeatherSitInt
     temp: float
     hum: float
     windspeed: float
 
 
-class YearInteger(ConstrainedInt):
-    ge = 1800
-    le = 2020
+#class YearInteger(ConstrainedInt):
+#    ge = 1800
+#    le = 2020
 
 # class ModelInput(BaseModel):
 #     YrSold: YearInteger
